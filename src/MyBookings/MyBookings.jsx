@@ -1,31 +1,39 @@
 import { Box, Typography, Container, Stack } from "@mui/material";
-import HospitalCard from "../components/HospitalCard/HospitalCard";
 import { useEffect, useState } from "react";
-import cta from "../assets/cta.png";
-import SearchBar from "../components/SearchBar/SearchBar";
 import NavBar from "../components/NavBar/NavBar";
+import SearchBar from "../components/SearchBar/SearchBar";
+import HospitalCard from "../components/HospitalCard/HospitalCard";
+import cta from "../assets/cta.png";
 
 export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
 
+  // Load bookings from localStorage
   useEffect(() => {
-    const localBookings = localStorage.getItem("bookings") || "[]";
-    setBookings(JSON.parse(localBookings));
+    try {
+      const localBookings = JSON.parse(
+        localStorage.getItem("bookings") || "[]"
+      );
+      setBookings(localBookings);
+      setFilteredBookings(localBookings);
+    } catch (error) {
+      console.error("Error reading bookings from localStorage", error);
+      setBookings([]);
+      setFilteredBookings([]);
+    }
   }, []);
 
-  useEffect(() => {
-    setFilteredBookings(bookings);
-  }, [bookings]);
-
-  //Separate page/component to render all the booked hospitals of user alogwith chosen date and time slot
-  //It utilises HospitalCard component to generate the cards with data
   return (
     <>
       <NavBar />
+
       <Box
-        sx={{ background: "linear-gradient(#EFF5FE, rgba(241,247,255,0.47))" }}
+        sx={{
+          background: "linear-gradient(#EFF5FE, rgba(241,247,255,0.47))",
+        }}
       >
+        {/* Header Section */}
         <Box
           mb="50px"
           pt={{ xs: 3, md: 1 }}
@@ -51,6 +59,8 @@ export default function MyBookings() {
               >
                 My Bookings
               </Typography>
+
+              {/* Search Bar */}
               <Box
                 bgcolor="#fff"
                 p={3}
@@ -60,12 +70,16 @@ export default function MyBookings() {
                 sx={{ translate: "0 50px" }}
                 width={{ xs: 1, md: "auto" }}
               >
-                <SearchBar list={bookings} filterList={setFilteredBookings} />
+                <SearchBar
+                  list={bookings}
+                  filterList={setFilteredBookings}
+                />
               </Box>
             </Stack>
           </Container>
         </Box>
 
+        {/* Bookings List */}
         <Container maxWidth="xl" sx={{ pt: 8, pb: 10, px: { xs: 0, md: 4 } }}>
           <Stack alignItems="flex-start" direction={{ md: "row" }}>
             <Stack
@@ -74,24 +88,34 @@ export default function MyBookings() {
               width={{ xs: 1, md: "calc(100% - 384px)" }}
               mr="24px"
             >
-                
               {filteredBookings.length > 0 &&
-                filteredBookings.map((hospital) => (
+                filteredBookings.map((hospital, index) => (
                   <HospitalCard
-                    key={hospital["Hospital Name"]}
+                    key={`${hospital["Hospital Name"]}-${index}`} // safer key
                     details={hospital}
                     booking={true}
                   />
                 ))}
 
-              {filteredBookings.length == 0 && (
-                <Typography variant="h3" bgcolor="#fff" p={3} borderRadius={2}>
+              {filteredBookings.length === 0 && (
+                <Typography
+                  variant="h5"
+                  bgcolor="#fff"
+                  p={3}
+                  borderRadius={2}
+                >
                   No Bookings Found!
                 </Typography>
               )}
             </Stack>
 
-            <img src={cta} width={360} height="auto" />
+            {/* CTA Image */}
+            <img
+              src={cta}
+              width={360}
+              height="auto"
+              alt="Download Medify App"   // ✅ ESLint alt-text fix
+            />
           </Stack>
         </Container>
       </Box>
