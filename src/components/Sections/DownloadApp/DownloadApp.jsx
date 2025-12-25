@@ -5,7 +5,7 @@ import arrow from "../../../assets/down-arr.png";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import SmsForm from "./SmsForm";
 
-//download app component to render input details using SmsForm component
+
 export default function DownloadApp() {
   return (
     <Box
@@ -13,8 +13,15 @@ export default function DownloadApp() {
     >
       <Container>
         <Grid container spacing={3} alignItems="center">
+          {/* Mobile image */}
           <Grid item xs={12} md={5.5}>
-            <Box src={mobile} component="img" width={1} height="auto" />
+            <Box
+              src={mobile}
+              component="img"
+              width={1}
+              height="auto"
+              alt="Mobile phone displaying Medify app"
+            />
           </Grid>
 
           <Grid item xs={12} md={6.5}>
@@ -32,6 +39,7 @@ export default function DownloadApp() {
                 App
               </Typography>
 
+              {/* Arrow image */}
               <Box
                 src={arrow}
                 component="img"
@@ -39,10 +47,13 @@ export default function DownloadApp() {
                 position="absolute"
                 left={0}
                 top={50}
+                alt="Arrow pointing to input field"
               />
 
+              {/* SMS Form */}
               <SmsForm />
 
+              {/* Download buttons */}
               <Stack
                 direction={{ xs: "column", md: "row" }}
                 spacing={{ xs: 1, md: 2 }}
@@ -54,8 +65,14 @@ export default function DownloadApp() {
                     py: 1.5,
                     borderRadius: 1.5,
                   }}
-                  size={"large"}
-                  startIcon={<img src={playstore} height={24} />}
+                  size="large"
+                  startIcon={
+                    <img
+                      src={playstore}
+                      height={24}
+                      alt="Google Play icon"
+                    />
+                  }
                   variant="contained"
                   disableElevation
                 >
@@ -69,7 +86,13 @@ export default function DownloadApp() {
                     borderRadius: 1.5,
                   }}
                   size="large"
-                  startIcon={<img src={apple} height={24} />}
+                  startIcon={
+                    <img
+                      src={apple}
+                      height={24}
+                      alt="Apple App Store icon"
+                    />
+                  }
                   variant="contained"
                   disableElevation
                 >
